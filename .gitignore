@@ -1,0 +1,5 @@
+# IDE Specyfic files
+/.vscode
+/.idea
+*.iml
+
