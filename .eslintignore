@@ -1,0 +1,4 @@
+coverage/
+app/dist/
+web_modules/
+node_modules/

@@ -3,3 +3,11 @@
 /.idea
 *.iml
 
+# Dependencies
+/node_modules
+/web_modules/**/*.js
+
+# Build results
+/app/dist
+/app/assets/js
+/coverage
