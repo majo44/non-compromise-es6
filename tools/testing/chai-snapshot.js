@@ -1,3 +1,9 @@
+/**
+ * @fileOverview
+ * As original chai-karma-snapshot package requires the preprocessing (is using commonjs), can it be used in this setup.
+ * This is very simple replacement of this plugin.
+ */
+
 function snapshotPath(node) {
     var path = [];
     while (node && node.parent) {
