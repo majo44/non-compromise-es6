@@ -4,6 +4,15 @@ Development setup for authoring application without requirement of builders, bun
 Before you will go forward please read: [A Future Without Webpack](https://www.pikapkg.com/blog/pika-web-a-future-without-webpack).
 Please also look at the [Open WC](https://open-wc.org/) project. 
 
+### Goal
+Because latest browsers supports most of critical parts of ES6 standard including es modules and dynamic `import()`, 
+there is no need anymore to use compilers/transpilers/bundlere/loaders, super fancy complicated angular/react/... cli 
+and other ...ers durring regular day to day development process.
+
+The goal of this project is to establish development setup which will allows developer to do not be forced to usage of 
+any tools during day to day javascript development. There are only required two tools, text editor 
+(vim, notepad, ... or some IDE) and modern browser.      
+
 ### Key features 
 * Clean pure es6 code with es6 modules 
 * Non bundling/compiling required during development workflow, write your code and just (auto) reload in browser.
