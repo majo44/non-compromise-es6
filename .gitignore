@@ -6,6 +6,7 @@
 # Dependencies
 /node_modules
 /web_modules/**/*.js
+/web_modules/**/*.js.map
 
 # Build results
 /app/dist
