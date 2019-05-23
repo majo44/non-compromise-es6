@@ -10,7 +10,13 @@
     "skipLibCheck": true,
     "lib": ["dom", "es7"],
     "noEmitHelpers": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "baseUrl": ".",
+    "paths": {
+      "/*" : [
+        "./*"
+      ]
+    }
   },
   "baseUrl": ".",
   "files": [

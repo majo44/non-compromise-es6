@@ -22,22 +22,26 @@ any tools during day to day javascript development. There are only required two 
 * Es6 dependencies loading thought [Pika](https://www.pikapkg.com/)
 * Commonjs dependencies loading thought wrapping them to es6 modules (dummy tool provided)
 * Typechecking thought [typescript](https://www.typescriptlang.org/) and `@jsdoc` annotations
-* Production bundle build thought [webpack](https://webpack.js.org/) and typescript loader for compile to es5. 
+* Production bundle build thought [webpack](https://webpack.js.org/) and [typescript](https://www.typescriptlang.org/)
+loader for compile to es5. 
 * IE11 support (after bundling)
 
 ### Caveats    
 * Support of commonjs 3party dependencies is very limited. For each such module (not package), we have to define all 
 imports and exports. Please consider to use alternatives which are natively supports es6 (modules) please look at   
 [Pika](https://www.pikapkg.com/)
-* The paths to the 3party dependencies are relative (not absolute), unfortunately I did not found the option how to 
-configure webpack with typescript to use absolute root imports.
 * To support the typechecking of 3party dependencies, for each of dependency we need to provide proxy `.d.ts` file 
 
 ### Missing
+* Api docs generation - there is still incompatibilities between [jsdoc](https://github.com/jsdoc/jsdoc) and 
+[typescript](https://www.typescriptlang.org/) which cause some docs generation errors eg: 
+[Improve module ergonomics](https://github.com/jsdoc/jsdoc/issues/1645)
 * Templates minification - there is no tool for optimizations of `lit-html` templates and simple work with webpack     
 * Coverage - unfortunately karma runner is using older version of Istanbul which doesn't support es6 instrumenting. 
 There is opened [PR](https://github.com/karma-runner/karma-coverage/pull/377) which will solve this problem. 
-* WallebyJs 
+* Demoing - as storybook is not clean es6 solution I do not want to introduce it for now, demoing should be super simple 
+without requirement of any build/bundling  
+* WallebyJs
 
 ### Related projects
 * [Open WC](https://open-wc.org/)

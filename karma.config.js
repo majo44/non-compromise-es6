@@ -1,21 +1,26 @@
 const path = require('path');
 process.env.CHROME_BIN = require('puppeteer').executablePath();
+
 module.exports = function (config) {
     config.set({
         frameworks: ['mocha', 'chai', 'snapshot', 'mocha-snapshot', 'sinon'],
         files: [
-            {pattern: 'tools/testing/chai-snapshot.js', type: 'module'},
+            { pattern: 'tools/testing/chai-snapshot.js', type: 'module' },
             'app/src/**/__snapshots__/**/*.md',
-            {pattern: 'app/src/**/*.spec.js', type: 'module'},
-            {pattern: 'app/src/**/*.js', type: 'module', served: true, included: false},
-            {pattern: 'web_modules/**/*.js', type: 'module', served: true, included: false},
+            { pattern: 'app/src/**/*.spec.js', type: 'module' },
+            {
+                pattern: 'app/src/**/*.js', type: 'module', served: true, included: false,
+            },
+            {
+                pattern: 'web_modules/**/*.js', type: 'module', served: true, included: false,
+            },
         ],
         preprocessors: {
             '**/__snapshots__/**/*.md': ['snapshot'],
             '/app/src/**/*.js': ['coverage'],
         },
-        reporters: ['progress','mocha', 'coverage-istanbul'],
-        port: 9876,  // karma web server port
+        reporters: ['progress', 'mocha', 'coverage-istanbul'],
+        port: 9876, // karma web server port
         colors: true,
         logLevel: config.LOG_INFO,
         browsers: ['ChromeHeadless'],
@@ -39,7 +44,7 @@ module.exports = function (config) {
             // fallback: resolve any karma- plugins
             // 'karma-*',
         ],
-            // ## code coverage config
+        // ## code coverage config
         coverageIstanbulReporter: {
             reports: ['html', 'lcovonly', 'text-summary'],
             dir: 'coverage',
@@ -66,5 +71,9 @@ module.exports = function (config) {
                 return path.join(basePath, 'app/src/__snapshots__', `${suiteName}.md`);
             },
         },
-    })
+        middleware: ['static'],
+        static: {
+            path: path.join(__dirname),
+        },
+    });
 };

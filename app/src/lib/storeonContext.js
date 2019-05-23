@@ -1,4 +1,4 @@
-import sCreateStore from '../../../web_modules/storeon.js';
+import sCreateStore from '/web_modules/storeon.js';
 
 /**
  * @typedef {(event:PropertyKey, data?:any, context?:any) => void} StoreonDispatch

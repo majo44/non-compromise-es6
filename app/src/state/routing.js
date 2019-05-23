@@ -1,6 +1,14 @@
 import { createBrowserHistory } from '../../../web_modules/history.js';
 import { ROUTING_EVENTS, onNavigate, navigate } from '../lib/storeonRoutingModule.js';
 
+export const ROUTES = {
+    ADMIN: '/admin',
+    HOME: '/home',
+    USERS: '/users/?(.*?)',
+    USER: '/user/(.*?)',
+    NOT_FOUND: '/404',
+};
+
 /**
  * @typedef {import('../lib/storeonRoutingModule.js').Navigation} Navigation
  * @typedef {import('../lib/storeonRoutingModule.js').StateWithRouting} StateWithRouting
@@ -13,11 +21,11 @@ import { ROUTING_EVENTS, onNavigate, navigate } from '../lib/storeonRoutingModul
 export const appRoutingModule = (store) => {
     const history = createBrowserHistory();
 
-    history.listen((location, action) => {
-        if (action === 'POP') {
-            navigate(store, location.pathname, true);
-        }
-    });
+    // history.listen((location, action) => {
+    //     if (action === 'POP') {
+    //         navigate(store, location.pathname, true);
+    //     }
+    // });
 
     store.on(
         ROUTING_EVENTS.NAVIGATION_ENDED,
@@ -35,41 +43,40 @@ export const appRoutingModule = (store) => {
     );
 
     store.on('@init', async () => {
-        onNavigate(store, '', () => {
-            navigate(store, '/404');
-        });
-
-        onNavigate(store, '/', () => {
-            // eslint-disable-next-line
-            console.log('PAGE  HOME 0 ');
-        });
-
-        onNavigate(store, '/404', () => {
-            // eslint-disable-next-line
-            console.log('PAGE  404');
-        });
-
-        onNavigate(store, '/home/(.*)/(.*)', async (navigation, abortSignal) => {
+        // on non matched, redirect to 404
+        onNavigate(store, '', () => navigate(store, ROUTES.NOT_FOUND));
+        // home
+        onNavigate(store, ROUTES.HOME, async (navigation, abortSignal) => {
             await new Promise(res => setTimeout(res, 1000));
             if (!abortSignal.aborted) {
                 // eslint-disable-next-line
-                console.log('PAGE  HOME');
+                console.log('PAGE  HOME', navigation);
+            }
+        });
+        // 404
+        onNavigate(store, ROUTES.NOT_FOUND, () => {});
+
+        // admin page - lazy loading of module
+        const unRegister = onNavigate(store, ROUTES.ADMIN, async (navigation, abortSignal) => {
+            // preload module
+            const adminModule = await import('../modules/adminModule.js');
+            // if not aborted
+            if (!abortSignal.aborted) {
+                // unregister app level route handle
+                unRegister();
+                // init module
+                adminModule.initModule(store);
+                // navigate once again (with force flag)
+                navigate(store, navigation.url, false, true);
             }
         });
 
-        onNavigate(store, '/admin', async () => {
-            // eslint-disable-next-line
-            console.log('WAIT FOR  ADMIN');
-            await new Promise(res => setTimeout(res, 1000));
-            // eslint-disable-next-line
-            console.log('PAGE ADMIN READY');
-        });
-
-        setTimeout(() => {
-            const url = history.location.pathname
-                + (history.location.search ? history.location.search : '')
-                + (history.location.hash ? history.location.hash : '');
-            navigate(store, url, true);
-        });
+        // on application start navigate to current url
+        // setTimeout(() => {
+        //     const url = history.location.pathname
+        //         + (history.location.search ? history.location.search : '')
+        //         + (history.location.hash ? history.location.hash : '');
+        //     navigate(store, url, true);
+        // });
     });
 };

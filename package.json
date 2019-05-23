@@ -3,25 +3,23 @@
   "version": "1.0.0",
   "dependencies": {
     "@webcomponents/webcomponentsjs": "^2.2.10",
-    "babel-eslint": "^10.0.1",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.4",
     "es6-object-assign": "^1.1.0",
     "es6-promise": "^4.2.6",
-    "express": "^4.16.4",
     "hardtack": "^4.1.0",
     "history": "^4.9.0",
-    "husky": "^2.3.0",
-    "lint-staged": "^8.1.7",
     "lit-element": "^2.1.0",
     "lit-html": "^1.0.0",
-    "puppeteer": "^1.14.0",
-    "storeon": "^0.8.3"
+    "storeon": "^0.8.3",
+    "cookie-parser": "^1.4.4",
+    "compression": "^1.7.4",
+    "express": "^4.16.4",
+    "puppeteer": "^1.14.0"
   },
   "devDependencies": {
     "@open-wc/testing-helpers": "^0.9.4",
     "@pika/web": "^0.4.2",
     "@types/history": "^4.7.2",
+    "babel-eslint": "^10.0.1",
     "browser-sync": "^2.26.3",
     "chai": "^4.2.0",
     "copyfiles": "^2.1.0",
@@ -30,6 +28,7 @@
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-wc": "^1.1.0",
+    "husky": "^2.3.0",
     "karma": "^4.1.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -44,9 +43,7 @@
     "mocha": "^6.1.4",
     "nodemon": "^1.19.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.17.1",
     "sinon": "^7.3.2",
-    "string-replace-loader": "^2.1.1",
     "ts-loader": "^5.3.3",
     "tslib": "^1.9.3",
     "typescript": "^3.4.5",
@@ -82,5 +79,9 @@
       "lit-element",
       "lit-html"
     ]
+  },
+  "browser": {
+    "/web_modules/lit-element.js": "./web_modules/lit-element.js",
+    "/web_modules/storeon.js": "./web_modules/storeon.js"
   }
 }
