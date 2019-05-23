@@ -13,8 +13,8 @@
     "importHelpers": true,
     "baseUrl": ".",
     "paths": {
-      "/*" : [
-        "./*"
+      "/web_modules/*.js" : [
+        "./web_modules/*.d.ts"
       ]
     }
   },

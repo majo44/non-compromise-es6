@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-const production = true || process.env.node_env === 'production';
+const production = process.env.node_env === 'production';
 const port = process.env.PORT || 8008;
 
 app.use(compression());

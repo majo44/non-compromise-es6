@@ -52,10 +52,14 @@ export class AppComponent extends Component {
         this.store = store;
         this.inc = () => store.dispatch('inc');
         this.dec = () => store.dispatch('dec');
-        this.type = () => store.dispatch(
-            'text',
-            /** @type {HTMLInputElement} */ (this.shadowRoot.querySelector('#in')).value,
-        );
+        this.type = () => {
+            if (this.shadowRoot) {
+                store.dispatch(
+                    'text',
+                    /** @type {HTMLInputElement} */ (this.shadowRoot.querySelector('#in')).value,
+                );
+            }
+        };
         store.on('@changed', async () => {
             this.requestUpdate();
         });
