@@ -21,8 +21,9 @@ any tools during day to day javascript development. There are only required two 
 * (Snapshot) testing thought [karma](http://karma-runner.github.io) also without building & bundling
 * Es6 dependencies loading thought [Pika](https://www.pikapkg.com/)
 * Commonjs dependencies loading thought wrapping them to es6 modules (dummy tool provided)
-* (optional) typechecking thought [typescript](https://www.typescriptlang.org/) and `@jsdoc` annotations
-* Production bundle build thought [webpack](https://webpack.js.org/) and typescript loader for compile to es5.  
+* Typechecking thought [typescript](https://www.typescriptlang.org/) and `@jsdoc` annotations
+* Production bundle build thought [webpack](https://webpack.js.org/) and typescript loader for compile to es5. 
+* IE11 support (after bundling)
 
 ### Caveats    
 * Support of commonjs 3party dependencies is very limited. For each such module (not package), we have to define all 
