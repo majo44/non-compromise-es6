@@ -1,4 +1,4 @@
-import { createBrowserHistory } from '../../../web_modules/history.js';
+import { createBrowserHistory } from '/web_modules/history.js';
 import { ROUTING_EVENTS, onNavigate, navigate } from '../lib/storeonRoutingModule.js';
 
 export const ROUTES = {
@@ -21,11 +21,11 @@ export const ROUTES = {
 export const appRoutingModule = (store) => {
     const history = createBrowserHistory();
 
-    // history.listen((location, action) => {
-    //     if (action === 'POP') {
-    //         navigate(store, location.pathname, true);
-    //     }
-    // });
+    history.listen((location, action) => {
+        if (action === 'POP') {
+            navigate(store, location.pathname, true);
+        }
+    });
 
     store.on(
         ROUTING_EVENTS.NAVIGATION_ENDED,
@@ -72,11 +72,11 @@ export const appRoutingModule = (store) => {
         });
 
         // on application start navigate to current url
-        // setTimeout(() => {
-        //     const url = history.location.pathname
-        //         + (history.location.search ? history.location.search : '')
-        //         + (history.location.hash ? history.location.hash : '');
-        //     navigate(store, url, true);
-        // });
+        setTimeout(() => {
+            const url = history.location.pathname
+                + (history.location.search ? history.location.search : '')
+                + (history.location.hash ? history.location.hash : '');
+            navigate(store, url, true);
+        });
     });
 };

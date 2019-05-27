@@ -82,6 +82,9 @@
   },
   "browser": {
     "/web_modules/lit-element.js": "./web_modules/lit-element.js",
-    "/web_modules/storeon.js": "./web_modules/storeon.js"
+    "/web_modules/storeon.js": "./web_modules/storeon.js",
+    "/web_modules/history.js": "./web_modules/history.js",
+    "/web_modules/storeonDevTools.js": "./web_modules/storeonDevTools.js",
+    "/web_modules/storeonLoggerBrowser.js": "./web_modules/storeonLoggerBrowser.js"
   }
 }

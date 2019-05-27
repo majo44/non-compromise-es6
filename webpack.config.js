@@ -1,16 +1,9 @@
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
-    externals: {
-        '/web_modules/storeonDevTools.js': 'null',
-        '/web_modules/storeonLoggerBrowser.js': 'null',
-    },
-    // resolve: {
-    //     alias:
-    // },
     module: {
-
         rules: [
             {
                 test: /\.js/,
@@ -34,6 +27,7 @@ module.exports = {
     entry: './app/src/index.js',
     target: 'web',
     plugins: [
+        new webpack.NormalModuleReplacementPlugin(/\/env\.js/, path.join(__dirname, 'app/src/env.prod.js')),
         new UglifyJSPlugin({ sourceMap: true, extractComments: true }),
     ],
 };

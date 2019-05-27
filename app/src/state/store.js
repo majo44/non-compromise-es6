@@ -1,5 +1,5 @@
-import storeonDevTools from '../../../web_modules/storeonDevTools.js';
-import storeonLogger from '../../../web_modules/storeonLoggerBrowser.js';
+import storeonDevTools from '/web_modules/storeonDevTools.js';
+import storeonLogger from '/web_modules/storeonLoggerBrowser.js';
 
 import { createStore } from '../lib/storeonContext.js';
 import { production } from '../env.js';

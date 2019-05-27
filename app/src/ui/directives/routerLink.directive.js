@@ -21,7 +21,7 @@ const routeLinkClickHandler = (e) => {
         url: element.getAttribute('href') || '',
         replace,
     };
-    element.dispatchEvent(event);
+    document.body.dispatchEvent(event);
     return false;
 };
 

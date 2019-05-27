@@ -31,6 +31,7 @@ loader for compile to es5.
 imports and exports. Please consider to use alternatives which are natively supports es6 (modules) please look at   
 [Pika](https://www.pikapkg.com/)
 * To support the typechecking of 3party dependencies, for each of dependency we need to provide proxy `.d.ts` file 
+* For resolving all absolute dependencies for production build we need to provide mapping in browse field in `package.json` 
 
 ### Missing
 * Api docs generation - there is still incompatibilities between [jsdoc](https://github.com/jsdoc/jsdoc) and 
