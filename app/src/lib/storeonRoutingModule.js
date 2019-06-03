@@ -5,12 +5,12 @@
  *      replace?: boolean,
  *      force?:boolean,
  *      async?: boolean
- * }} Navigation
+ * }} Navigation represents ongoing navigation
  *
  * @typedef {Navigation & {
  *      params?: Object.<PropertyKey, string>,
  *      route: string
- * }} NavigationState
+ * }} NavigationState represents state of navigation
  *
  * @typedef {{
  *      handles: Array.<{id:number, route: string}>,
@@ -18,14 +18,17 @@
  *      nextNavigationId: number,
  *      current?: NavigationState
  *      next?: Navigation
- * }} RoutingState
+ * }} RoutingState routing state
  *
  * @typedef {function(Navigation, AbortSignal): (void | Promise.<void>)} RouteCallback
+ *      callback for route navigation
  *
  * @typedef {{routing: RoutingState}} StateWithRouting
+ *      app state with routing module installed
  */
 
 /**
+ * Registered routes cache.
  * @type {Object.<number, {id: number, route: string, regexp: RegExp, callback: RouteCallback}>}
  */
 const routes = {};
@@ -46,7 +49,24 @@ export const ROUTING_EVENTS = {
 };
 
 /**
- * @param {import('storeon').Store<StateWithRouting>} store
+ * Stereon router module.
+ * Register the routing workflow.
+ *
+ * @public
+ * @param {import('storeon').Store<StateWithRouting>} store store instace
+ *
+ * @example
+ * import sreateStore from 'storeon';
+ * // add module to storeon
+ * const store = createStore([storeonRoutingModule]);
+ * // handle route
+ * onNavigate(store, '/home', () => {
+ *    console.log('home page');
+ * });
+ * // navigate
+ * navigate('/home');
+ * // getting current
+ * store.get().routing.current.route; // => '/home'
  */
 export const storeonRoutingModule = (store) => {
     /**
@@ -270,9 +290,34 @@ export const storeonRoutingModule = (store) => {
 };
 
 /**
- * @param {import('storeon').Store.<StateWithRouting>} store
- * @param {string} route
- * @param {RouteCallback} callback
+ * Register the route handler to top of stack of handles.
+ *
+ * @param {import('storeon').Store.<StateWithRouting>} store on store
+ * @param {string} route the route regexp string
+ * @param {RouteCallback} callback the callback which will be called on provided route
+ *
+ * @return {function(): void} unregistering rute handle
+ *
+ * @example simple
+ * onNavigate(store, '/home', () => console.log('going home'));
+ *
+ * @example redirection
+ * onNavigate(store, '', () => navigate(store, '/404'));
+ *
+ * @example lazy loading
+ * // admin page - lazy loading of modul'/admin', async (navigation, abortSignal) => {
+ *      // preload module
+ *      const adminModule = await import('/modules/adminModule.js');
+ *      // if not aborted
+ *      if (!abortSignal.aborted) {
+ *          // unregister app level route handle
+ *          unRegister();
+ *          // init module, which will register own handle for same route
+ *          adminModule.adminModule(store);
+ *          // navigate once again (with force flag)
+ *          navigate(store, navigation.url, false, true);
+ *      }
+ * });
  */
 export function onNavigate(store, route, callback) {
     const id = store.get().routing.nextHandleId;
@@ -288,16 +333,19 @@ export function onNavigate(store, route, callback) {
 }
 
 /**
- * @param {import('storeon').Store.<StateWithRouting>} store
- * @param {string} url
- * @param {boolean} [replace]
- * @param {boolean} [force]
+ * Navigate to provided route.
+ *
+ * @param {import('storeon').Store.<StateWithRouting>} store on store
+ * @param {string} url to url
+ * @param {boolean} [replace] replace url
+ * @param {boolean} [force] force navigation (even there is ongoing attempt for same route)
  */
 export function navigate(store, url, replace, force) {
     store.dispatch(ROUTING_EVENTS.NAVIGATE, { url, replace, force });
 }
 
 /**
+ * Cancel current navigation.
  * @param {import('storeon').Store.<StateWithRouting>} store
  */
 export function cancelNavigation(store) {

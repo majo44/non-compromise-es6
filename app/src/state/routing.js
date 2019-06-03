@@ -27,6 +27,7 @@ export const appRoutingModule = (store) => {
         }
     });
 
+    // connecting to browser history
     store.on(
         ROUTING_EVENTS.NAVIGATION_ENDED,
         /**
@@ -41,7 +42,7 @@ export const appRoutingModule = (store) => {
             }
         },
     );
-
+    // we have to register routes after the @init
     store.on('@init', async () => {
         // on non matched, redirect to 404
         onNavigate(store, '', () => navigate(store, ROUTES.NOT_FOUND));
