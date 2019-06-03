@@ -1,5 +1,5 @@
 import { createBrowserHistory } from '/web_modules/history.js';
-import { ROUTING_EVENTS, onNavigate, navigate } from '../lib/storeonRoutingModule.js';
+import { EVENTS, onNavigate, navigate } from '../lib/storeonRoutingModule.js';
 
 export const ROUTES = {
     ADMIN: '/admin',
@@ -29,7 +29,7 @@ export const appRoutingModule = (store) => {
 
     // connecting to browser history
     store.on(
-        ROUTING_EVENTS.NAVIGATION_ENDED,
+        EVENTS.NAVIGATION_ENDED,
         /**
          * @param {Navigation} navigation
          * @param {*} state
