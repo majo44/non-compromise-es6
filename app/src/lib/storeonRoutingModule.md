@@ -8,20 +8,20 @@ Asynchronous routing for storeon, which:
 This code is decoupled from browser history or UI code. 
 Examples on integration you can find in examples.
 
-###Sizes
+### Sizes
 * es5/commonjs is 9,41 kB , 
 * es2017(async/await)/esm  is 5.21 kB,
 
 There is a room for have a smaller size, after few renamings and removing description form symbol, es2017/esm version will be ~4kB
 
 
-###Api
+### Api
 - `storeonRoutingModule `- is storeon module which contains the whole logic of routing
 - `onNavigate(store, route, callback) ` - function which registers route callback, on provided store for provided route (path regexp). Callback is a function which will be called if route will be matched, can returns undefined or promise. In case of promise, route will be not applied (navigation will be not ended) until  the promise will be not resolve, callback is also taking the [abortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal), to be notified that current processing navigation was cancelled.  Important think is that last registered handle have a higher priority, so if at the end you will register handle for route '', that handle will catch all navigations
 - `navigate(store, url, [replace], [force])` - function which triggers navigation to particular url
 - `cancelNavigation(store)` - function which cancel current navigation (if there is any in progress)
 
-###Flow
+### Flow
 1. user registers the handles by usage of `onNavigate` (can do this in stereon module, but within the @init callback),
 
     1.1 for each registered handle we generating unique `id`,
@@ -56,9 +56,9 @@ resolve,
 5. on `navigation canceled` we are clear the `next` navigation in state
 6. on `navigation end` we move `next` to `current` ins state
 
-###Examples
+### Examples
 
-##### Creating the store with router module 
+#### Creating the store with router module 
 ```javascript
 import createStore from 'storeon';
 import { storeonRoutingModule } from '@storeon/async-router';
@@ -78,7 +78,7 @@ navigate(store, '/home');
 store.get().routing.current.route; // => '/home'
 ```
 
-##### Redirection
+#### Redirection
 ```javascript
 import createStore from 'storeon';
 import { storeonRoutingModule, onNavigate, navigate } from '@storeon/async-router';
@@ -92,8 +92,8 @@ onNavigate(store, '', () => {
 });  
 ``` 
 
-##### Async route handle
-###### Preloading the data
+#### Async route handle
+##### Preloading the data
 ```javascript
 import createStore from 'storeon';
 import { storeonRoutingModule, onNavigate, navigate } from '@storeon/async-router';
@@ -112,7 +112,7 @@ onNavigate(store, '/home', async (navigation, abortSignal) => {
 });  
 ``` 
 
-###### Lazy loading of submodule
+##### Lazy loading of submodule
 ```javascript    
 // app.js
 import createStore from 'storeon';
@@ -152,6 +152,42 @@ export function adminModule(store) {
 }
 ```
 
+
+#### Integration with browser history
+```javascript    
+import createStore from 'storeon';
+import { storeonRoutingModule, onNavigate, navigate, EVENTS } from '@storeon/async-router';
+
+// create store with adding route module
+const store = createStore([storeonRoutingModule]);
+
+// returns full url 
+function getLocationFullUrl() {
+    return window.location.pathname
+        + (window.location.search ? window.location.search : '')
+        + (window.location.hash ? window.location.hash : '');
+}
+
+// on application start navigate to current url
+setTimeout(() => {
+    navigate(store, getLocationFullUrl(), false);
+});
+
+// connect with back/forwad of browser history
+window.addEventListener('popstate', () => {
+    navigate(store, getLocationFullUrl());
+});
+
+// connecting store changes to browser history
+store.on(EVENTS.NAVIGATION_ENDED, async (state, navigation) => {
+    // ignore url's from popstate
+    if (getLocationFullUrl() !== navigation.url) {
+        navigation.replace ?
+            window.history.replaceState({}, '', navigation.url) :
+            window.history.pushState({}, '', navigation.url);
+    }
+});
+```
 
 
 

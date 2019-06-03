@@ -1,4 +1,4 @@
-import { createBrowserHistory } from '/web_modules/history.js';
+// import { createBrowserHistory } from '/web_modules/history.js';
 import { EVENTS, onNavigate, navigate } from '../lib/storeonRoutingModule.js';
 
 export const ROUTES = {
@@ -15,33 +15,16 @@ export const ROUTES = {
  * @typedef {import('storeon').Store<StateWithRouting>} Store
  */
 
+function getLocationFullUrl() {
+    return window.location.pathname
+        + (window.location.search ? window.location.search : '')
+        + (window.location.hash ? window.location.hash : '');
+}
+
 /**
  * @param {Store} store
  */
 export const appRoutingModule = (store) => {
-    const history = createBrowserHistory();
-
-    history.listen((location, action) => {
-        if (action === 'POP') {
-            navigate(store, location.pathname, true);
-        }
-    });
-
-    // connecting to browser history
-    store.on(
-        EVENTS.NAVIGATION_ENDED,
-        /**
-         * @param {Navigation} navigation
-         * @param {*} state
-         */
-        async (state, navigation) => {
-            if (navigation.replace) {
-                history.replace(navigation.url);
-            } else {
-                history.push(navigation.url);
-            }
-        },
-    );
     // we have to register routes after the @init
     store.on('@init', async () => {
         // on non matched, redirect to 404
@@ -74,10 +57,29 @@ export const appRoutingModule = (store) => {
 
         // on application start navigate to current url
         setTimeout(() => {
-            const url = history.location.pathname
-                + (history.location.search ? history.location.search : '')
-                + (history.location.hash ? history.location.hash : '');
-            navigate(store, url, true);
+            navigate(store, getLocationFullUrl(), false);
         });
+
+        window.addEventListener('popstate', () => {
+            navigate(store, getLocationFullUrl());
+        });
+
+        // connecting to browser history
+        store.on(
+            EVENTS.NAVIGATION_ENDED,
+            /**
+             * @param {Navigation} navigation
+             * @param {*} state
+             */
+            async (state, navigation) => {
+                if (getLocationFullUrl() !== navigation.url) {
+                    if (navigation.replace) {
+                        window.history.replaceState({}, '', navigation.url);
+                    } else {
+                        window.history.pushState({}, '', navigation.url);
+                    }
+                }
+            },
+        );
     });
 };
