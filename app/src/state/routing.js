@@ -65,7 +65,7 @@ export const appRoutingModule = (store) => {
                 // unregister app level route handle
                 unRegister();
                 // init module
-                adminModule.initModule(store);
+                adminModule.adminModule(store);
                 // navigate once again (with force flag)
                 navigate(store, navigation.url, false, true);
             }
